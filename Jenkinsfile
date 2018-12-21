@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'linux64'
+    }
+
+  }
   stages {
     stage('checkout') {
       agent {
