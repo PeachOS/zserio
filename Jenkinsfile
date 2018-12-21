@@ -6,7 +6,7 @@ pipeline {
 
   }
   stages {
-    stage('checkout') {
+    stage('Message') {
       agent {
         node {
           label 'linux64'
@@ -14,7 +14,7 @@ pipeline {
 
       }
       steps {
-        echo 'Checkout'
+        echo 'Starting pipeline'
       }
     }
   }
