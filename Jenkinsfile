@@ -6,7 +6,7 @@ pipeline {
 
   }
   stages {
-    stage('Message') {
+    stage('Start') {
       agent {
         node {
           label 'linux64'
@@ -15,6 +15,11 @@ pipeline {
       }
       steps {
         echo 'Starting pipeline'
+      }
+    }
+    stage('Build linux64') {
+      steps {
+        echo 'Build linux64'
       }
     }
   }
