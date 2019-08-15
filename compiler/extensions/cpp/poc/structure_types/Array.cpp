@@ -25,6 +25,7 @@ Array::Array(zserio::BitStreamReader& in,
     read(in);
 }
 
+// MBition: Make this a default copy, nothing special is happening here, call to initialize only copies values as well
 Array::Array(const Array& other) :
         m_values_(other.m_values_)
 {
@@ -33,7 +34,7 @@ Array::Array(const Array& other) :
     else
         m_isInitialized = false;
 }
-
+// MBition: same as in copy ctor
 Array& Array::operator=(const Array& other)
 {
     m_values_ = other.m_values_;
@@ -45,6 +46,7 @@ Array& Array::operator=(const Array& other)
     return *this;
 }
 
+// MBition: Remove function in favour of defaulted copy ctor
 void Array::initialize(
         uint32_t _size)
 {
@@ -52,6 +54,7 @@ void Array::initialize(
     m_isInitialized = true;
 }
 
+// MBition: Definitely not noexcept! There is a throw..
 uint32_t Array::getSize() const noexcept
 {
     if (!m_isInitialized)
@@ -95,6 +98,7 @@ size_t Array::bitSizeOf(size_t bitPosition) const
     return endBitPosition - bitPosition;
 }
 
+// MBition: This can be reduced to one line aka "return zserio::initializeOffsets<zserio::StdIntArrayTraits<int32_t>>(m_values_, bitPosition);"
 size_t Array::initializeOffsets(size_t bitPosition)
 {
     size_t endBitPosition = bitPosition;

@@ -18,11 +18,13 @@
 class Array
 {
 public:
+    // Consider defaulting this ctor and giving m_isInitialized default value false
     Array() noexcept;
     Array(zserio::BitStreamReader& in,
             uint32_t _size);
 
     // new in cpp11
+    // MBition: Why is this explicit? No need
     template <typename ZSERIO_T_values>
     explicit Array(uint32_t _size, ZSERIO_T_values&& _values)
     :   m_isInitialized(true), m_size_(_size), m_values_(std::forward<ZSERIO_T_values>(_values))
@@ -30,6 +32,7 @@ public:
     }
 
     // new in cpp11
+    // MBition: Why explicit? Why is the definition in header as it's not templated.
     explicit Array(uint32_t _size, std::initializer_list<int32_t> _values)
     :   m_isInitialized(true), m_size_(_size), m_values_(_values)
     {
@@ -56,6 +59,7 @@ public:
     size_t bitSizeOf(size_t bitPosition = 0) const;
     size_t initializeOffsets(size_t bitPosition);
 
+    // MBition: should be noexcept
     bool operator==(const Array& other) const;
     int hashCode() const;
 
