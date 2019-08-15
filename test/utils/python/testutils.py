@@ -23,6 +23,8 @@ def getZserioApi(testFile, mainZsFile, hasPackage=True, hasApi=True, topLevelPac
     :param mainZsFile: Main zserio source file for the current test suite.
     :param hasPackage: Whether the mainZsFile has a package definition. Default is True.
     :param hasApi: Whether the api.py is supposed to be generated. Default is True.
+    :param topLevelPackage: Top level package. By default it's guessed from the mainZsFile.
+    :param extraArgs: Extra arguments to zserio compiler.
     :returns: Generated python API if available, None otherwise.
     """
 
@@ -55,8 +57,26 @@ def getApiDir(testDir):
     """
 
     buildDir = TEST_ARGS["build_dir"] # python test root build directory
-    testSuiteName = _getTestSuiteName(testDir)
+    testSuiteName = getTestSuiteName(testDir)
     return os.path.join(buildDir, testSuiteName)
+
+def getTestSuiteName(testDir):
+    """
+    Extracts test suite name from the given directory structure.
+
+    Example:
+    testDir = "/home/user/zserio/tests/language/enumeration_types/python
+    testSuiteName = getTestSuiteName(testDir)
+    print(testSuiteName) # prints "language/enumeration_types"
+
+    :param testDir: Current test directory.
+    :returns: Test suite name.
+    """
+
+    testDir = os.path.dirname(testDir) # python dir
+    testDir, secondDir = os.path.split(testDir)
+    firstDir = os.path.split(testDir)[1]
+    return os.path.join(firstDir, secondDir)
 
 def _compileZserio(zsDef, apiDir, extraArgs=None):
     """
@@ -102,21 +122,3 @@ def _importModule(path, modulePath):
     api = importlib.import_module(modulePath)
     sys.path.remove(path)
     return api
-
-def _getTestSuiteName(testDir):
-    """
-    Extracts test suite name from the given directory structure.
-
-    Example:
-    testDir = "/home/user/zserio/tests/language/enumeration_types/python
-    testSuiteName = _getTestSuiteName(testDir)
-    print(testSuiteName) # prints "language/enumeration_types"
-
-    :param testDir: Current test directory.
-    :returns: Test suite name.
-    """
-
-    testDir = os.path.dirname(testDir) # python dir
-    testDir, secondDir = os.path.split(testDir)
-    firstDir = os.path.split(testDir)[1]
-    return os.path.join(firstDir, secondDir)
