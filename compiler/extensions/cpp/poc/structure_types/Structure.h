@@ -53,6 +53,7 @@ public:
     {
     }
 
+    // MBition: With a C++11 inmplementation of std::optional and std::any all those ctors should be defaulted as no custom copy/move code is required
     // TODO: is default really ok? see copy ctor! // TODO: NO, when children compound is in place!!! IMPLEMENT!
     Structure(Structure&&);
     Structure& operator=(Structure&& other);
